@@ -29,8 +29,8 @@ public class UnitMovement : MonoBehaviour
 
     public void Move(Vector3 targetPosition)
     {
-        this.targetPosition = targetPosition;
         isMoving = true;
+        this.targetPosition = targetPosition;
     }
 
     public void Stop()

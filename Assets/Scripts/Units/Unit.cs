@@ -22,6 +22,12 @@ public abstract class Unit : MonoBehaviour
     protected float baseAttackSpeed { get; set; }
     protected float bonusAttackSpeed { get; set;  }
 
+    protected bool isMelee { get; set; }
+
+    protected bool canAttack = true;
+
+    protected Unit targetUnit { get; set; }
+
     private UnitMovement movement;
 
     [SerializeField] HealthBar healthBar;
@@ -47,6 +53,7 @@ public abstract class Unit : MonoBehaviour
         bonusManaRegen = 0f;
         manaBar.SetMaxMana(maxMana);
         healthBar.SetMaxHealth(maxHealth);
+        isMelee = false;
     }
 
     public float GetDamage()
@@ -84,6 +91,13 @@ public abstract class Unit : MonoBehaviour
         return maxHealth;
     }
 
+    public void SetCanAttack(bool canAttack)
+    {
+        this.canAttack = canAttack;
+    }
+
+    public bool CanAttack() { return canAttack; }
+
     public float GetMana() { return mana;}
 
     public float GetMaxMana() { return maxMana;}
@@ -99,6 +113,17 @@ public abstract class Unit : MonoBehaviour
     {
         return movement;
     }
+
+    public Unit GetTargetUnit()
+    {
+        return targetUnit;
+    }
+
+    public bool IsMelee()
+    {
+        return isMelee;
+    }
+    public void SetTargetUnit(Unit targetUnit) { this.targetUnit = targetUnit; }
 
     private void RegenerateHealth()
     {
