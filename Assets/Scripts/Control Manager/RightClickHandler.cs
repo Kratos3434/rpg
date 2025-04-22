@@ -7,6 +7,8 @@ public class RightClickHandler : MonoBehaviour
 {
     private Vector3 targetPosition;
     [SerializeField] MainController mainController;
+    [SerializeField] HudDisplayManager hudDisplayManager;
+
     // Update is called once per frame
     void Update()
     {
@@ -18,6 +20,11 @@ public class RightClickHandler : MonoBehaviour
                 targetPosition.z = 0;
 
                 mainController.GetUnit().GetMovement().Move(targetPosition);
+
+                if (hudDisplayManager.GetUnit() != mainController.GetUnit())
+                {
+                    hudDisplayManager.SetUnit(mainController.GetUnit());
+                }
             }
         }
     }

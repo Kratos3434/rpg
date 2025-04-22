@@ -38,6 +38,15 @@ public class HudDisplayManager : MonoBehaviour
         mana.text = $"{(int)unit.GetMana()}/{(int)unit.GetMaxMana()}";
         maxMana.text = $"+{unit.GetManaRegen():F1}";
         damage.text = $"{(int)unit.GetBaseDamage()} + {(int)unit.GetBonusDamage()} Damage";
+    }
 
+    public void SetUnit(Unit unit)
+    {
+        this.unit = unit;
+    }
+
+    public Unit GetUnit()
+    {
+        return unit;
     }
 }
