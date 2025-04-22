@@ -7,6 +7,6 @@ public class John : Unit
     // Start is called before the first frame update
     private void Awake()
     {
-        Initialize(800, 900, 30, 5, 5);
+        Initialize(800, 900, 30, 2, 5);
     }
 }

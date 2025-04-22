@@ -33,7 +33,7 @@ public class RightClickHandler : MonoBehaviour
                 {
                     Unit unit = hit.collider.GetComponent<Unit>();
 
-                    if (unit)
+                    if (unit && unit != mainController.GetUnit())
                     {
                         mainController.GetUnit().SetTargetUnit(unit);
                     }

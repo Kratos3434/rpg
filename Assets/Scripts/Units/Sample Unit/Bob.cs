@@ -7,5 +7,6 @@ public class Bob : Unit
     private void Awake()
     {
         Initialize(500, 500, 50);
+        abilities.Add(gameObject.AddComponent<Empower>());
     }
 }

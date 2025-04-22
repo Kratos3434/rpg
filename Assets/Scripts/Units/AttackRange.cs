@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackRange : MonoBehaviour
 {
-    private CircleCollider2D circleCollider;
+    //private CircleCollider2D circleCollider;
     private Unit unit;
     private Collider2D[] units;
     [SerializeField] LayerMask targetLayer;
@@ -13,12 +13,12 @@ public class AttackRange : MonoBehaviour
     private void Start()
     {
         unit = GetComponent<Unit>();
-        circleCollider = GetComponent<CircleCollider2D>();
+        //circleCollider = GetComponent<CircleCollider2D>();
     }
 
     private void Update()
     {
-        units = Physics2D.OverlapCircleAll(transform.position, circleCollider.radius, targetLayer);
+        units = Physics2D.OverlapCircleAll(transform.position, unit.GetAttackRange(), targetLayer);
 
         if (units.Length > 0)
         {
@@ -41,8 +41,9 @@ public class AttackRange : MonoBehaviour
                             if (!unit.IsMelee())
                             {
                                 GameObject projectile = Instantiate(rangedAttackProjectilePrefab, unit.transform.position, unit.transform.rotation);
-                                projectile.GetComponent<AttackProjectile>().Initialize(target, unit, new Damage(Damage.Type.Physical, unit.GetDamage()));
+                                projectile.GetComponent<AttackProjectile>().Initialize(target, unit, new Damage(Damage.Type.Physical, unit.GetDamage()), new List<Ability>(unit.GetAttackModifiers()));
                             }
+                            unit.RemoveAttackModifiers();
                         }
                     }
                 }

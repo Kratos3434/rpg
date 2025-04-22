@@ -23,10 +23,11 @@ public class LeftClickHandler : MonoBehaviour
                 
                 if (hit.collider && hit.collider != mainController.GetUnit().GetComponent<Collider2D>()) {
                     Unit unit = hit.collider.GetComponent<Unit>();
-                    if (LayerMask.LayerToName(unit.gameObject.layer) == "Ally")
-                    {
-                        mainController.SetUnit(unit);
-                    }
+                    //if (LayerMask.LayerToName(unit.gameObject.layer) == "Ally")
+                    //{
+                    //    mainController.SetUnit(unit);
+                    //}
+                    mainController.SetUnit(unit);
                     hudDisplayManager.SetUnit(unit);
                 }
             }

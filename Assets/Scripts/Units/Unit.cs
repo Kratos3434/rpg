@@ -22,6 +22,8 @@ public abstract class Unit : MonoBehaviour
     protected float baseAttackSpeed { get; set; }
     protected float bonusAttackSpeed { get; set;  }
 
+    protected float attackRange = 3.39f;
+
     protected bool isMelee { get; set; }
 
     protected bool canAttack = true;
@@ -33,10 +35,19 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] HealthBar healthBar;
     [SerializeField] ManaBar manaBar;
 
+    protected List<Ability> abilities = new List<Ability>(4);
+
+    /// <summary>
+    /// Attack modifiers are always cleared after every attack if it contains at least one
+    /// </summary>
+    protected List<Ability> attackModifiers = new List<Ability>();
+
+    protected List<Debuff> debuffs = new List<Debuff>();
+
     private float healthRegenTimer = 0f;
 
 
-    public void Initialize(float maxHealth, float maxMana, float baseDamage, float baseMovementSpeed = 5f, float baseHealthRegen = 1f, float baseManaRegen = 1.5f, float baseAttackSpeed = 5f)
+    public void Initialize(float maxHealth, float maxMana, float baseDamage, float baseMovementSpeed = 2f, float baseHealthRegen = 1f, float baseManaRegen = 1.5f, float baseAttackSpeed = 5f)
     {
         this.maxHealth = maxHealth;
         this.maxMana = maxMana;
@@ -51,6 +62,7 @@ public abstract class Unit : MonoBehaviour
         bonusDamage = 0f;
         bonusHealthRegen = 0f;
         bonusManaRegen = 0f;
+        bonusMovementSpeed = 2f;
         manaBar.SetMaxMana(maxMana);
         healthBar.SetMaxHealth(maxHealth);
         isMelee = false;
@@ -109,14 +121,60 @@ public abstract class Unit : MonoBehaviour
         return bonusDamage;
     }
 
+    public Ability GetAbility(int index)
+    {
+        return abilities[index];
+    }
+
+    public void SetBonusDamage(float bonusDamage) {  this.bonusDamage = bonusDamage; }
+
+    public void SetBonusMovementSpeed(float bonusMovementSpeed)
+    {
+        this.bonusMovementSpeed = bonusMovementSpeed;
+    }
+
+    public float GetBonusMovementSpeed() { return bonusMovementSpeed; }
+
     public UnitMovement GetMovement()
     {
         return movement;
     }
 
+    public float GetAttackRange() { return attackRange; }
+
     public Unit GetTargetUnit()
     {
         return targetUnit;
+    }
+
+    public void RemoveAttackModifier(Ability ability)
+    {
+        attackModifiers.Remove(ability);
+    }
+
+    public void AddAttackModifier(Ability modifier)
+    {
+        attackModifiers.Add(modifier);
+    }
+
+    /// <summary>
+    /// This is called every after attack
+    /// </summary>
+    public void RemoveAttackModifiers()
+    {
+        if (attackModifiers.Count > 0)
+        {
+            foreach (Ability attackModifier in attackModifiers)
+            {
+                attackModifier.Dispel();
+            }
+            attackModifiers.Clear();
+        }
+    }
+
+    public void AddDebuff(Debuff debuff)
+    {
+        debuffs.Add(debuff);
     }
 
     public bool IsMelee()
@@ -124,6 +182,8 @@ public abstract class Unit : MonoBehaviour
         return isMelee;
     }
     public void SetTargetUnit(Unit targetUnit) { this.targetUnit = targetUnit; }
+
+    public List<Ability> GetAttackModifiers() { return attackModifiers; }
 
     public void TakeDamage(Damage damage)
     {
@@ -137,7 +197,7 @@ public abstract class Unit : MonoBehaviour
             case Damage.Type.Pure: 
                 break;
         }
-
+        Debug.Log($"I took {(int)damage.getDamage()} Damage");
         healthBar.SetHealth(health);
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class AttackProjectile : MonoBehaviour
 {
     private Damage damage;
+    private List<Ability> modifiers;
     private Unit sourceUnit;
     private Unit targetUnit;
 
@@ -23,14 +24,18 @@ public class AttackProjectile : MonoBehaviour
     {
         if (collision)
         {
-            Debug.Log("Collision detected");
+            //Debug.Log("Collision detected");
             Unit unit = collision.GetComponent<Unit>();
-            Debug.Log(unit.name);
+            //Debug.Log(unit.name);
             if (unit)
             {
                 if (unit == targetUnit)
                 {
                     targetUnit.TakeDamage(damage);
+                    foreach (Ability ability in modifiers)
+                    {
+                        ability.AddDebuff(targetUnit);
+                    }
                     sourceUnit.SetCanAttack(true);
                     Destroy(gameObject);
                 }
@@ -38,10 +43,11 @@ public class AttackProjectile : MonoBehaviour
         }
     }
 
-    public void Initialize(Unit targetUnit, Unit sourceUnit, Damage damage)
+    public void Initialize(Unit targetUnit, Unit sourceUnit, Damage damage, List<Ability> modifiers)
     {
         this.targetUnit = targetUnit;
         this.damage = damage;
         this.sourceUnit = sourceUnit;
+        this.modifiers = modifiers;
     }
 }
