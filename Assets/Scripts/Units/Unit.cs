@@ -25,7 +25,7 @@ public abstract class Unit : MonoBehaviour
     private float healthRegenTimer = 0f;
 
 
-    public void Initialize(float maxHealth, float maxMana, float baseDamage, float baseMovementSpeed = 5f, float baseHealthRegen = 1f, float baseManaRegen = 1f, float baseAttackSpeed = 5f)
+    public void Initialize(float maxHealth, float maxMana, float baseDamage, float baseMovementSpeed = 5f, float baseHealthRegen = 1f, float baseManaRegen = 1.5f, float baseAttackSpeed = 5f)
     {
         this.maxHealth = maxHealth;
         this.maxMana = maxMana;
@@ -67,6 +67,27 @@ public abstract class Unit : MonoBehaviour
     public float GetAttackSpeed()
     {
         return baseAttackSpeed + bonusAttackSpeed;
+    }
+
+    public float GetHealth()
+    {
+        return health;
+    }
+
+    public float GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public float GetMana() { return mana;}
+
+    public float GetMaxMana() { return maxMana;}
+
+    public float GetBaseDamage() { return baseDamage; }
+
+    public float GetBonusDamage()
+    {
+        return bonusDamage;
     }
 
     private void RegenerateHealth()
