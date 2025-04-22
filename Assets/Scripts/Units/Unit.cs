@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This is the base class that all playable and non-playable units derive from
+/// </summary>
 public abstract class Unit : MonoBehaviour
 {
     protected float maxHealth { get; set; }
@@ -18,6 +21,8 @@ public abstract class Unit : MonoBehaviour
     protected float bonusManaRegen { get; set;}
     protected float baseAttackSpeed { get; set; }
     protected float bonusAttackSpeed { get; set;  }
+
+    private UnitMovement movement;
 
     [SerializeField] HealthBar healthBar;
     [SerializeField] ManaBar manaBar;
@@ -90,6 +95,11 @@ public abstract class Unit : MonoBehaviour
         return bonusDamage;
     }
 
+    public UnitMovement GetMovement()
+    {
+        return movement;
+    }
+
     private void RegenerateHealth()
     {
         healthRegenTimer += Time.deltaTime;
@@ -110,8 +120,14 @@ public abstract class Unit : MonoBehaviour
         healthBar.SetHealth(health);
     }
 
+    private void Start()
+    {
+        movement = GetComponent<UnitMovement>();
+    }
+
     private void Update()
     {
         RegenerateHealth();
     }
+
 }
