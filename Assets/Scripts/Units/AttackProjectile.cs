@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackProjectile : MonoBehaviour
 {
-    private float damage;
+    private Damage damage;
     private Unit sourceUnit;
     private Unit targetUnit;
 
@@ -30,6 +30,7 @@ public class AttackProjectile : MonoBehaviour
             {
                 if (unit == targetUnit)
                 {
+                    targetUnit.TakeDamage(damage);
                     sourceUnit.SetCanAttack(true);
                     Destroy(gameObject);
                 }
@@ -37,7 +38,7 @@ public class AttackProjectile : MonoBehaviour
         }
     }
 
-    public void Initialize(Unit targetUnit, Unit sourceUnit, float damage)
+    public void Initialize(Unit targetUnit, Unit sourceUnit, Damage damage)
     {
         this.targetUnit = targetUnit;
         this.damage = damage;

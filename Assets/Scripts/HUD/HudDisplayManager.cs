@@ -26,9 +26,9 @@ public class HudDisplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SetValues();
         manaBar.SetMana(unit.GetMana());
         healthBar.SetHealth(unit.GetHealth());
+        SetValues();
     }
 
     private void SetValues()
@@ -43,6 +43,8 @@ public class HudDisplayManager : MonoBehaviour
     public void SetUnit(Unit unit)
     {
         this.unit = unit;
+        manaBar.SetMaxMana(unit.GetMaxMana());
+        healthBar.SetMaxHealth(unit.GetMaxHealth());
     }
 
     public Unit GetUnit()

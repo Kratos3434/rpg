@@ -125,6 +125,26 @@ public abstract class Unit : MonoBehaviour
     }
     public void SetTargetUnit(Unit targetUnit) { this.targetUnit = targetUnit; }
 
+    public void TakeDamage(Damage damage)
+    {
+        switch (damage.getType())
+        {
+            case Damage.Type.Physical: 
+                health -= damage.getDamage();
+                break;
+            case Damage.Type.Magical:
+                break;
+            case Damage.Type.Pure: 
+                break;
+        }
+
+        healthBar.SetHealth(health);
+    }
+
+    public ManaBar GetManaBar() { return manaBar; }
+
+    public HealthBar GetHealthBar() { return healthBar; }
+
     private void RegenerateHealth()
     {
         healthRegenTimer += Time.deltaTime;

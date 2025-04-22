@@ -219,6 +219,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4636250151425676269, guid: ca7ed96466a022d4c84b4e60f66c3567, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6981270769882847532, guid: ca7ed96466a022d4c84b4e60f66c3567, type: 3}
       propertyPath: m_Name
       value: Health Bar
@@ -920,6 +924,7 @@ GameObject:
   - component: {fileID: 687687837}
   - component: {fileID: 687687839}
   - component: {fileID: 687687838}
+  - component: {fileID: 687687840}
   m_Layer: 7
   m_Name: Square
   m_TagString: Untagged
@@ -1120,6 +1125,33 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 3.39
+--- !u!50 &687687840
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 687687832}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!224 &1011956664 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2564479427331248652, guid: ca7ed96466a022d4c84b4e60f66c3567, type: 3}
