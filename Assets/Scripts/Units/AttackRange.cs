@@ -41,7 +41,7 @@ public class AttackRange : MonoBehaviour
                             if (!unit.IsMelee())
                             {
                                 GameObject projectile = Instantiate(rangedAttackProjectilePrefab, unit.transform.position, unit.transform.rotation);
-                                projectile.GetComponent<AttackProjectile>().Initialize(target, unit, new Damage(Damage.Type.Physical, unit.GetDamage()), new List<Ability>(unit.GetAttackModifiers()));
+                                projectile.GetComponent<Projectile>().Initialize(target, unit, new Damage(Damage.Type.Physical, unit.GetDamage()), unit.GetAttackSpeed(), new List<Ability>(unit.GetAttackModifiers()));
                             }
                             unit.RemoveAttackModifiers();
                         }

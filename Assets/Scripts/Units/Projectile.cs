@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackProjectile : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
     private Damage damage;
-    private List<Ability> modifiers;
+    private List<Ability> modifiers = null;
     private Unit sourceUnit;
     private Unit targetUnit;
+    private float speed;
 
     private void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetUnit.transform.position, sourceUnit.GetAttackSpeed() * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, targetUnit.transform.position, speed * Time.deltaTime);
         //So that the projectile always faces the targets angle
         Vector2 direction = targetUnit.transform.position - transform.position;
 
@@ -32,9 +33,12 @@ public class AttackProjectile : MonoBehaviour
                 if (unit == targetUnit)
                 {
                     targetUnit.TakeDamage(damage);
-                    foreach (Ability ability in modifiers)
+                    if (modifiers != null)
                     {
-                        ability.AddDebuff(targetUnit);
+                        foreach (Ability ability in modifiers)
+                        {
+                            ability.AddDebuff(targetUnit);
+                        }
                     }
                     sourceUnit.SetCanAttack(true);
                     Destroy(gameObject);
@@ -43,11 +47,12 @@ public class AttackProjectile : MonoBehaviour
         }
     }
 
-    public void Initialize(Unit targetUnit, Unit sourceUnit, Damage damage, List<Ability> modifiers)
+    public void Initialize(Unit targetUnit, Unit sourceUnit, Damage damage, float speed, List<Ability> modifiers)
     {
         this.targetUnit = targetUnit;
         this.damage = damage;
         this.sourceUnit = sourceUnit;
         this.modifiers = modifiers;
+        this.speed = speed;
     }
 }

@@ -8,5 +8,6 @@ public class Bob : Unit
     {
         Initialize(500, 500, 50);
         abilities.Add(gameObject.AddComponent<Empower>());
+        abilities.Add(gameObject.AddComponent<ShockingOrb>());
     }
 }

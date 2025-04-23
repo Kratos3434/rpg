@@ -126,6 +126,10 @@ public abstract class Unit : MonoBehaviour
         return abilities[index];
     }
 
+    public List<Ability> GetAbilities() { 
+        return abilities;
+    }
+
     public void SetBonusDamage(float bonusDamage) {  this.bonusDamage = bonusDamage; }
 
     public void SetBonusMovementSpeed(float bonusMovementSpeed)
@@ -193,6 +197,7 @@ public abstract class Unit : MonoBehaviour
                 health -= damage.getDamage();
                 break;
             case Damage.Type.Magical:
+                health -= damage.getDamage();
                 break;
             case Damage.Type.Pure: 
                 break;

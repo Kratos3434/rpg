@@ -11,5 +11,11 @@ public abstract class Ability : Spell
     protected int maxLevel;
     protected List<float> damage;
     protected List<float> duration;
-    
+    protected List<float> castRange;
+
+    private void Start()
+    {
+        sourceUnit = GetComponent<Unit>();
+    }
+
 }

@@ -8,28 +8,40 @@ public class MainController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        try
         {
-            DisplayMessage(unit, "Q");
-            if (unit.GetAbility(0))
+            if (unit.GetAbilities().Count == 0) throw new System.Exception("No Abilities Yet");
+
+            if (Input.GetKeyDown(KeyCode.Q))
             {
-                unit.GetAbility(0).Activate();
+                DisplayMessage(unit, "Q");
+                if (unit.GetAbility(0))
+                {
+                    unit.GetAbility(0).Activate();
+                }
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            DisplayMessage(unit, "W");
-        }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                DisplayMessage(unit, "W");
+                if (unit.GetAbility(1))
+                {
+                    unit.GetAbility(1).Activate();
+                }
+            }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            DisplayMessage(unit, "E");
-        }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                DisplayMessage(unit, "E");
+            }
 
-        if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                DisplayMessage(unit, "R");
+            }
+        } catch (System.Exception e)
         {
-            DisplayMessage(unit, "R");
+            Debug.Log(e.Message);
         }
     }
 

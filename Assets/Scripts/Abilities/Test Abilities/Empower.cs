@@ -7,7 +7,6 @@ public class Empower : Ability
 
     private void Awake()
     {
-        sourceUnit = GetComponent<Unit>();
         title = "Empower";
         description = "Your next attack will deal bonus damage";
         currentLevel = 3;
