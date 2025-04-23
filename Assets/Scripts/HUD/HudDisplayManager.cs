@@ -13,11 +13,17 @@ public class HudDisplayManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI mana;
     [SerializeField] TextMeshProUGUI maxMana;
     [SerializeField] TextMeshProUGUI damage;
+    [SerializeField] GameObject errorMessage;
+    [SerializeField] TextMeshProUGUI errorMessageText;
+
+
+    private float errorMessageTimer = 0f;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        errorMessage.SetActive(false);
         manaBar.SetMaxMana(unit.GetMaxMana());
         healthBar.SetMaxHealth(unit.GetMaxHealth());
         SetValues();
@@ -29,6 +35,20 @@ public class HudDisplayManager : MonoBehaviour
         manaBar.SetMana(unit.GetMana());
         healthBar.SetHealth(unit.GetHealth());
         SetValues();
+
+        if (DisplayManager.errorMessage != null)
+        {
+            errorMessageTimer += Time.deltaTime;
+
+            errorMessage.SetActive(true);
+            errorMessageText.text = DisplayManager.errorMessage;
+
+            if (errorMessageTimer >= 1f) {
+                DisplayManager.errorMessage = null;
+                errorMessage.SetActive(false);
+                errorMessageTimer = 0f;
+            }
+        }
     }
 
     private void SetValues()

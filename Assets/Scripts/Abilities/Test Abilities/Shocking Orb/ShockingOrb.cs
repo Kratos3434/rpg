@@ -53,11 +53,11 @@ public class ShockingOrb : Ability
                 projectile.GetComponent<Projectile>().Initialize(target, sourceUnit, new Damage(damageType, damage[currentLevel]), 4f, null);
             } catch (System.Exception e)
             {
-                Debug.Log(e.Message);
+                DisplayManager.errorMessage = e.Message;
             }
         } else
         {
-            Debug.Log("No Target!");
+            DisplayManager.errorMessage = "No Target";
         }
     }
 
