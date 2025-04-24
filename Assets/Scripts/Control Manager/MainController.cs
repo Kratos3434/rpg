@@ -8,44 +8,38 @@ public class MainController : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            ActivateAbility(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            ActivateAbility(1);
+
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ActivateAbility(2);
+
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ActivateAbility(3);
+        }
+    }
+
+    private void ActivateAbility(int index)
+    {
         try
         {
-            if (unit.GetAbilities().Count == 0) return;
+            if (unit.GetAbilities().Count == 0) throw new System.Exception("No Abilities Yet");
+            if (index > unit.GetAbilities().Count - 1) throw new System.Exception("Ability Slot is Empty");
 
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                DisplayMessage(unit, "Q");
-                if (unit.GetAbility(0))
-                {
-                    unit.GetAbility(0).Activate();
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                DisplayMessage(unit, "W");
-                if (unit.GetAbility(1))
-                {
-                    unit.GetAbility(1).Activate();
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                DisplayMessage(unit, "E");
-                if (unit.GetAbility(2))
-                {
-                    unit.GetAbility(2).Activate();
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                DisplayMessage(unit, "R");
-            }
+            unit.GetAbility(index).Activate();
         } catch (System.Exception e)
         {
-            //Debug.Log(e.Message);
+            DisplayManager.errorMessage = e.Message;
         }
     }
 

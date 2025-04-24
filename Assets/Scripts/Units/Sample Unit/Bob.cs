@@ -10,6 +10,7 @@ public class Bob : Unit
         abilities.Add(gameObject.AddComponent<Empower>());
         abilities.Add(gameObject.AddComponent<ShockingOrb>());
         abilities.Add(gameObject.AddComponent<Blink>());
+        abilities.Add(gameObject.AddComponent<AoeSpell>());
 
     }
 }

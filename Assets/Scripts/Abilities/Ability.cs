@@ -9,7 +9,7 @@ using UnityEngine;
 public abstract class Ability : Spell
 {
     protected int currentLevel = 0;
-    protected int maxLevel;
+    protected int maxLevel = 4;
     protected List<float> damage;
     protected List<float> duration;
     protected List<float> castRange;
@@ -25,12 +25,26 @@ public abstract class Ability : Spell
         {
             int everything = int.Parse(affects[0]);
             targetLayer = everything;
-            affect = "everything";
+            affect = "Everything";
             Debug.Log("Target Layer set to everything");
         } catch
         {
-            targetLayer = LayerMask.GetMask(affects.ToArray());
-            affect = "Units";
+            if (affects.Count > 1)
+            {
+                targetLayer = LayerMask.GetMask(affects.ToArray());
+                affect = "Units";
+            } else
+            {
+                //Inverse the LayerMask
+                string layerName = LayerMask.LayerToName(gameObject.layer);
+
+                if (layerName == "Enemy")
+                {
+                    targetLayer = LayerMask.GetMask("Ally");
+                } else {
+                    targetLayer = LayerMask.GetMask("Enemy");
+                }
+            }
         }
         sourceUnit = GetComponent<Unit>();
     }
@@ -51,6 +65,8 @@ public abstract class Ability : Spell
             Vector2 result = (Vector2)transform.position + offset;
 
             float distance = Vector2.Distance(transform.position, MouseHover.GetTargetPosition());
+
+            sourceUnit.GetMovement().Stop();
 
             if (distance > castRange[0])
             {
@@ -82,6 +98,8 @@ public abstract class Ability : Spell
                 }
 
                 if (!target) throw new System.Exception("Target out of range");
+
+                sourceUnit.GetMovement().Stop();
 
                 action(target, target.transform.position);
             }
