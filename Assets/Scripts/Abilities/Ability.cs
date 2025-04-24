@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,10 +13,86 @@ public abstract class Ability : Spell
     protected List<float> damage;
     protected List<float> duration;
     protected List<float> castRange;
+    protected Collider2D[] units;
+    protected List<string> affects = new List<string>();
+    protected string affect;
+    LayerMask targetLayer;
 
     private void Start()
     {
+        //Logic to set which unit this ability will affect
+        try
+        {
+            int everything = int.Parse(affects[0]);
+            targetLayer = everything;
+            affect = "everything";
+            Debug.Log("Target Layer set to everything");
+        } catch
+        {
+            targetLayer = LayerMask.GetMask(affects.ToArray());
+            affect = "Units";
+        }
         sourceUnit = GetComponent<Unit>();
     }
 
+    private void Update()
+    {
+        units = Physics2D.OverlapCircleAll(transform.position, castRange[0], targetLayer);
+    }
+
+    protected void OnTargetedAbility(Action<Unit, Vector3> action)
+    {
+        if (affect == "everything")
+        {
+            Vector2 direction = (MouseHover.GetTargetPosition() - transform.position).normalized;
+
+            Vector2 offset = direction * castRange[0];
+
+            Vector2 result = (Vector2)transform.position + offset;
+
+            float distance = Vector2.Distance(transform.position, MouseHover.GetTargetPosition());
+
+            if (distance > castRange[0])
+            {
+                action(null, result);
+            } else
+            {
+                action(null, MouseHover.GetTargetPosition());
+            }
+
+
+        }   
+        else if (MouseHover.GetHoveredUnit()) {
+            try
+            {
+                if (MouseHover.GetHoveredUnit() == sourceUnit) throw new System.Exception("Ability cannot target self");
+                if (units.Length == 0) throw new System.Exception("Target out of range");
+
+                Unit target = null;
+
+                foreach (Collider2D unitCollider in units)
+                {
+                    Unit u = unitCollider.GetComponent<Unit>();
+
+                    if (u == MouseHover.GetHoveredUnit())
+                    {
+                        target = u;
+                        break;
+                    }
+                }
+
+                if (!target) throw new System.Exception("Target out of range");
+
+                action(target, target.transform.position);
+            }
+            catch (System.Exception e)
+            {
+                DisplayManager.errorMessage = e.Message;
+            }
+        }   
+        else
+        {
+            DisplayManager.errorMessage = "No Target";
+        }
+    }
 }

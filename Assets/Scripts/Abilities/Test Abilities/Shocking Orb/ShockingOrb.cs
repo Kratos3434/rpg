@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class ShockingOrb : Ability
 {
-    private Collider2D[] units;
-    LayerMask targetLayer;
     private GameObject projectilePrefab;
 
     private void Awake()
     {
         projectilePrefab = Resources.Load<GameObject>("Prefabs/Abilities/Shocking Orb/Shocking Orb Projectile");
-        targetLayer = LayerMask.GetMask("Enemy");
+        affects.Add("Enemy");
         title = "Shocking Orb";
         description = "Fires an orb to the target enemy dealing damage";
         maxLevel = 4;
@@ -20,45 +18,13 @@ public class ShockingOrb : Ability
         castRange = new List<float>(1) { 5f };
     }
 
-    private void Update()
-    {
-        units = Physics2D.OverlapCircleAll(transform.position, castRange[0], targetLayer);
-
-    }
-
     public override void Activate()
     {
-        if (MouseHover.GetHoveredUnit()) {
-            try
-            {
-                if (MouseHover.GetHoveredUnit() == sourceUnit) throw new System.Exception("Ability cannot target self");
-                if (units.Length == 0) throw new System.Exception("Target out of range");
-
-                Unit target = null;
-
-                foreach (Collider2D unitCollider in units)
-                {
-                    Unit u = unitCollider.GetComponent<Unit>();
-
-                    if (u == MouseHover.GetHoveredUnit())
-                    {
-                        target = u;
-                        break;
-                    }
-                }
-
-                if (!target) throw new System.Exception("Target out of range");
-
-                GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
-                projectile.GetComponent<Projectile>().Initialize(target, sourceUnit, new Damage(damageType, damage[currentLevel]), 4f, null);
-            } catch (System.Exception e)
-            {
-                DisplayManager.errorMessage = e.Message;
-            }
-        } else
+        OnTargetedAbility((target, targetPosition) =>
         {
-            DisplayManager.errorMessage = "No Target";
-        }
+            GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
+            projectile.GetComponent<Projectile>().Initialize(target, sourceUnit, new Damage(damageType, damage[currentLevel]), 4f, null);
+        });
     }
 
     public override void AddDebuff(Unit targetUnit)

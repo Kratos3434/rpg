@@ -7,12 +7,12 @@ public class MouseHover : MonoBehaviour
 {
     private static Unit hoveredUnit;
     [SerializeField] LayerMask hoverableLayers;
+    private static Vector3 targetPosition;
 
     private void Update()
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            Vector3 targetPosition;
             targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             targetPosition.z = 0;
 
@@ -31,4 +31,8 @@ public class MouseHover : MonoBehaviour
     }
 
     public static Unit GetHoveredUnit() { return hoveredUnit; }
+
+    public static Vector3 GetTargetPosition() {  return targetPosition; }
+
+
 }

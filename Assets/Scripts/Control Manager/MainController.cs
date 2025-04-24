@@ -10,7 +10,7 @@ public class MainController : MonoBehaviour
     {
         try
         {
-            if (unit.GetAbilities().Count == 0) throw new System.Exception("No Abilities Yet");
+            if (unit.GetAbilities().Count == 0) return;
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -33,6 +33,10 @@ public class MainController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 DisplayMessage(unit, "E");
+                if (unit.GetAbility(2))
+                {
+                    unit.GetAbility(2).Activate();
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.R))
@@ -41,7 +45,7 @@ public class MainController : MonoBehaviour
             }
         } catch (System.Exception e)
         {
-            Debug.Log(e.Message);
+            //Debug.Log(e.Message);
         }
     }
 
