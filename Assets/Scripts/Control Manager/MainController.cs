@@ -34,7 +34,8 @@ public class MainController : MonoBehaviour
         try
         {
             if (unit.GetAbilities().Count == 0) throw new System.Exception("No Abilities Yet");
-            if (index > unit.GetAbilities().Count - 1) throw new System.Exception("Ability Slot is Empty");
+            if (!unit.GetAbility(index)) throw new System.Exception("Ability Slot is Empty");
+            if (unit.GetAbility(index).GetCooldownTimer() > 0f) throw new System.Exception("On Cooldown");
 
             unit.GetAbility(index).Activate();
         } catch (System.Exception e)

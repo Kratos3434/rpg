@@ -13,6 +13,8 @@ public abstract class Ability : Spell
     protected List<float> damage;
     protected List<float> duration;
     protected List<float> castRange;
+    protected List<float> cooldown;
+    protected float cooldownTimer = 0f;
     protected Collider2D[] units;
     protected List<string> affects = new List<string>();
     protected string affect;
@@ -25,7 +27,7 @@ public abstract class Ability : Spell
         {
             int everything = int.Parse(affects[0]);
             targetLayer = everything;
-            affect = "Everything";
+            affect = "everything";
             Debug.Log("Target Layer set to everything");
         } catch
         {
@@ -54,6 +56,20 @@ public abstract class Ability : Spell
         units = Physics2D.OverlapCircleAll(transform.position, castRange[0], targetLayer);
     }
 
+    private void LateUpdate()
+    {
+        if (!isActive && cooldownTimer > 0f)
+        {
+
+            if (cooldownTimer <= 0f)
+            {
+                cooldownTimer = 0f;
+            }
+
+            cooldownTimer -= Time.deltaTime;
+        }
+    }
+
     protected void OnTargetedAbility(Action<Unit, Vector3> action)
     {
         if (affect == "everything")
@@ -76,12 +92,14 @@ public abstract class Ability : Spell
                 action(null, MouseHover.GetTargetPosition());
             }
 
+            cooldownTimer = cooldown[currentLevel];
 
         }   
         else if (MouseHover.GetHoveredUnit()) {
             try
             {
                 if (MouseHover.GetHoveredUnit() == sourceUnit) throw new System.Exception("Ability cannot target self");
+                if (LayerMask.LayerToName(MouseHover.GetHoveredUnit().gameObject.layer) == LayerMask.LayerToName(gameObject.layer)) throw new Exception("Ability Cannot Target Allies");
                 if (units.Length == 0) throw new System.Exception("Target out of range");
 
                 Unit target = null;
@@ -102,6 +120,8 @@ public abstract class Ability : Spell
                 sourceUnit.GetMovement().Stop();
 
                 action(target, target.transform.position);
+
+                cooldownTimer = cooldown[currentLevel];
             }
             catch (System.Exception e)
             {
@@ -113,4 +133,14 @@ public abstract class Ability : Spell
             DisplayManager.errorMessage = "No Target";
         }
     }
+
+    protected void OnDispel(Action action)
+    {
+        action();
+        isActive = false;
+        durationTimer = 0f;
+        cooldownTimer = cooldown[currentLevel];
+    }
+
+    public float GetCooldownTimer() { return cooldownTimer; }
 }

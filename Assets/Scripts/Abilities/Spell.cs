@@ -15,6 +15,7 @@ public abstract class Spell : MonoBehaviour
     protected Unit targetUnit;
     protected bool isActive = false;
     protected float durationTimer = 0f;
+    protected string icon = "";
 
     /// <summary>
     /// This contains the logic of the spell
@@ -36,4 +37,6 @@ public abstract class Spell : MonoBehaviour
     {
         durationTimer = 0f;
     }
+
+    public string GetIcon() { return icon; }
 }

@@ -7,9 +7,10 @@ public class Empower : Ability
 
     private void Awake()
     {
+        icon = "Icons/Abilities/dota-2-marci-abilities";
         title = "Empower";
         description = "Your next attack will deal bonus damage";
-        currentLevel = 3;
+        currentLevel = 0;
         maxLevel = 4;
         damage = new List<float>(maxLevel)
         {
@@ -20,6 +21,8 @@ public class Empower : Ability
         };
 
         duration = new List<float>(maxLevel) { 10, 10, 10, 10 };
+
+        cooldown = new List<float>(maxLevel) { 10, 9, 8, 7 };
 
         damageType = Damage.Type.Physical;
     }
@@ -44,19 +47,17 @@ public class Empower : Ability
         {
             sourceUnit.SetBonusDamage(sourceUnit.GetBonusDamage() + damage[currentLevel]);
             sourceUnit.AddAttackModifier(this);
+            //cooldownTimer = cooldown[currentLevel];
             isActive = true;
-        } else
-        {
-            durationTimer = 0f;
         }
     }
 
     public override void Dispel()
     {
-        sourceUnit.SetBonusDamage(sourceUnit.GetBonusDamage() - damage[currentLevel]);
-        isActive = false;
-        durationTimer = 0f;
-        //sourceUnit.RemoveAttackModifier(this);
+        OnDispel(() =>
+        {
+            sourceUnit.SetBonusDamage(sourceUnit.GetBonusDamage() - damage[currentLevel]);
+        });
     }
 
     public override void AddDebuff(Unit targetUnit)

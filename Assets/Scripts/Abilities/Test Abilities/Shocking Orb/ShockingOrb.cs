@@ -16,6 +16,7 @@ public class ShockingOrb : Ability
         damage = new List<float>(maxLevel) { 50, 100, 150, 200 };
         damageType = Damage.Type.Magical;
         castRange = new List<float>(1) { 5f };
+        cooldown = new List<float>(maxLevel) { 10, 9, 8, 7 };
     }
 
     public override void Activate()

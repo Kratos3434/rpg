@@ -123,7 +123,7 @@ public abstract class Unit : MonoBehaviour
 
     public Ability GetAbility(int index)
     {
-        return abilities[index];
+        return (index > abilities.Count - 1 ? null : abilities[index]);
     }
 
     public List<Ability> GetAbilities() { 

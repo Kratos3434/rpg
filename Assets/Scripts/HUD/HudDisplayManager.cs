@@ -15,6 +15,9 @@ public class HudDisplayManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI damage;
     [SerializeField] GameObject errorMessage;
     [SerializeField] TextMeshProUGUI errorMessageText;
+    [SerializeField] AbilityDisplay ability1;
+    [SerializeField] AbilityDisplay ability2;
+    [SerializeField] AbilityDisplay ability3;
 
 
     private float errorMessageTimer = 0f;
@@ -27,6 +30,9 @@ public class HudDisplayManager : MonoBehaviour
         manaBar.SetMaxMana(unit.GetMaxMana());
         healthBar.SetMaxHealth(unit.GetMaxHealth());
         SetValues();
+        ability1.Set(unit.GetAbility(0));
+        ability2.Set(unit.GetAbility(1));
+        ability3.Set(unit.GetAbility(2));
     }
 
     // Update is called once per frame
@@ -65,6 +71,10 @@ public class HudDisplayManager : MonoBehaviour
         this.unit = unit;
         manaBar.SetMaxMana(unit.GetMaxMana());
         healthBar.SetMaxHealth(unit.GetMaxHealth());
+        ability1.Set(unit.GetAbility(0));
+        ability2.Set(unit.GetAbility(1));
+        ability3.Set(unit.GetAbility(2));
+        //SetValues();
     }
 
     public Unit GetUnit()

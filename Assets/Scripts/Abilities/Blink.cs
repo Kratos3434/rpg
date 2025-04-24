@@ -11,6 +11,7 @@ public class Blink : Ability
         maxLevel = 4;
         affects.Add("-1");
         castRange = new List<float>(maxLevel) { 5, 6, 7, 8 };
+        cooldown = new List<float>(maxLevel) { 10, 9, 8, 7 };
     }
 
     public override void Activate()
