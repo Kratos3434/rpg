@@ -13,32 +13,58 @@ public class AbilityDisplay : MonoBehaviour
     [SerializeField] TextMeshProUGUI cooldownTimer;
     [SerializeField] GameObject cover;
     [SerializeField] StatusBar statusBar;
+    [SerializeField] GameObject stunIcon;
+    private Unit unit;
 
     private void Update()
     {
-        if (ability.GetDurationTimer() > 0f)
+        if (ability)
         {
-            if (!statusBar.IsActive())
+            if (unit.IsStunned())
             {
-                statusBar.Activate(ability.GetDuration());
+                if (!stunIcon.activeSelf)
+                {
+                    stunIcon.SetActive(true);
+                }
             }
-        }
-
-        if (ability.GetCooldownTimer() > 0f)
-        {
-            if (!cooldownTimer.gameObject.activeSelf)
+            else
             {
-                cover.SetActive(true);
-                cooldownTimer.gameObject.SetActive(true);
+                if (stunIcon.activeSelf)
+                {
+                    stunIcon.SetActive(false);
+                }
             }
 
-            cooldownTimer.text = $"{(int)ability.GetCooldownTimer()}";
-        } else
-        {
-            if (cooldownTimer.gameObject.activeSelf)
+            if (ability.GetDurationTimer() > 0f)
             {
-                cover.SetActive(false);
-                cooldownTimer.gameObject.SetActive(false);
+                if (!statusBar.IsActive())
+                {
+                    statusBar.Activate();
+                    cover.SetActive(true);
+                }
+                statusBar.SetValues(ability.GetDuration(), ability.GetDuration() - ability.GetDurationTimer());
+            } else
+            {
+                statusBar.Deactivate();
+            }
+
+            if (ability.GetCooldownTimer() > 0f)
+            {
+                if (!cooldownTimer.gameObject.activeSelf)
+                {
+                    cover.SetActive(true);
+                    cooldownTimer.gameObject.SetActive(true);
+                }
+
+                cooldownTimer.text = $"{(int)ability.GetCooldownTimer()}";
+            }
+            else
+            {
+                if (cooldownTimer.gameObject.activeSelf)
+                {
+                    cover.SetActive(false);
+                    cooldownTimer.gameObject.SetActive(false);
+                }
             }
         }
     }
@@ -67,14 +93,20 @@ public class AbilityDisplay : MonoBehaviour
         }
     }
 
-    public void Set(Ability ability)
+    public void Set(Ability ability, Unit unit)
     {
+        this.ability = ability;
+        this.unit = unit;
+
         if (ability)
         {
-            this.ability = ability;
             SetIcon(ability.GetIcon());
         } else
         {
+            cooldownTimer.gameObject.SetActive(false);
+            cover.SetActive(false);
+            stunIcon.SetActive(false);
+            statusBar.Deactivate();
             SetIcon("");
         }
     }

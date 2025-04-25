@@ -30,8 +30,16 @@ public class UnitMovement : MonoBehaviour
 
     public void Move(Vector3 targetPosition)
     {
-        isMoving = true;
-        this.targetPosition = targetPosition;
+        try
+        {
+            if (unit.IsStunned()) throw new System.Exception("Stunned");
+
+            isMoving = true;
+            this.targetPosition = targetPosition;
+        } catch (System.Exception e)
+        {
+            DisplayManager.errorMessage = e.Message;
+        }
     }
 
     public void Stop()

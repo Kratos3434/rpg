@@ -30,9 +30,9 @@ public class HudDisplayManager : MonoBehaviour
         manaBar.SetMaxMana(unit.GetMaxMana());
         healthBar.SetMaxHealth(unit.GetMaxHealth());
         SetValues();
-        ability1.Set(unit.GetAbility(0));
-        ability2.Set(unit.GetAbility(1));
-        ability3.Set(unit.GetAbility(2));
+        ability1.Set(unit.GetAbility(0), unit);
+        ability2.Set(unit.GetAbility(1), unit);
+        ability3.Set(unit.GetAbility(2), unit);
     }
 
     // Update is called once per frame
@@ -71,9 +71,9 @@ public class HudDisplayManager : MonoBehaviour
         this.unit = unit;
         manaBar.SetMaxMana(unit.GetMaxMana());
         healthBar.SetMaxHealth(unit.GetMaxHealth());
-        ability1.Set(unit.GetAbility(0));
-        ability2.Set(unit.GetAbility(1));
-        ability3.Set(unit.GetAbility(2));
+        ability1.Set(unit.GetAbility(0), unit);
+        ability2.Set(unit.GetAbility(1), unit);
+        ability3.Set(unit.GetAbility(2), unit);
         //SetValues();
     }
 

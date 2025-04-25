@@ -13,28 +13,20 @@ public class StatusBar : MonoBehaviour
         slider = GetComponent<Slider>();
     }
 
-    private void Update()
-    {
-        if (duration > 0f)
-        {
-            slider.value = duration;
-
-            duration -= Time.deltaTime;
-        } else
-        {
-            if (gameObject.activeSelf)
-            {
-                gameObject.SetActive(false);
-            }
-        }
-    }
-
-    public void Activate(float duration)
+    public void SetValues(float maxDuration, float duration)
     {
         this.duration = duration;
-        slider.maxValue = duration;
+        slider.maxValue = maxDuration;
         slider.value = duration;
+    }
+
+    public void Activate()
+    {
         gameObject.SetActive(true);
+    }
+
+    public void Deactivate() {
+        gameObject.SetActive(false);
     }
 
     public bool IsActive()

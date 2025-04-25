@@ -10,18 +10,18 @@ public class Slow : Debuff
         description = $"You are slowed by {amount * 100}% for {duration} seconds";
     }
 
-    private void Update()
-    {
-        if (isActive)
-        {
-            durationTimer += Time.deltaTime;
+    //private void Update()
+    //{
+    //    if (isActive)
+    //    {
+    //        durationTimer += Time.deltaTime;
 
-            if (durationTimer >= duration)
-            {
-                Dispel();
-            }
-        }
-    }
+    //        if (durationTimer >= duration)
+    //        {
+    //            Dispel();
+    //        }
+    //    }
+    //}
 
     public override void Activate()
     {

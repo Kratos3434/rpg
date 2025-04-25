@@ -10,6 +10,19 @@ public abstract class Debuff : Spell
     protected float duration;
     protected float amount;
 
+    private void Update()
+    {
+        if (isActive)
+        {
+            durationTimer += Time.deltaTime;
+
+            if (durationTimer >= duration)
+            {
+                Dispel();
+            }
+        }
+    }
+
     public void Initialize(Unit targetUnit, float duration, float amount)
     {
         this.targetUnit = targetUnit;

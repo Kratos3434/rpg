@@ -33,6 +33,7 @@ public class MainController : MonoBehaviour
     {
         try
         {
+            if (unit.IsStunned()) throw new System.Exception("Stunned");
             if (unit.GetAbilities().Count == 0) throw new System.Exception("No Abilities Yet");
             if (!unit.GetAbility(index)) throw new System.Exception("Ability Slot is Empty");
             if (unit.GetAbility(index).GetCooldownTimer() > 0f) throw new System.Exception("On Cooldown");

@@ -28,6 +28,8 @@ public abstract class Unit : MonoBehaviour
 
     protected bool canAttack = true;
 
+    protected bool isStunned = false;
+
     protected Unit targetUnit { get; set; }
 
     private UnitMovement movement;
@@ -228,6 +230,11 @@ public abstract class Unit : MonoBehaviour
             healthRegenTimer = 0f;
         }
         healthBar.SetHealth(health);
+    }
+
+    public bool IsStunned()
+    {
+        return isStunned;
     }
 
     private void Start()
