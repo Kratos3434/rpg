@@ -143,4 +143,11 @@ public abstract class Ability : Spell
     }
 
     public float GetCooldownTimer() { return cooldownTimer; }
+
+    public float GetDuration()
+    {
+        return duration[currentLevel];
+    }
+
+    public float GetDurationTimer() { return durationTimer; }
 }

@@ -12,9 +12,18 @@ public class AbilityDisplay : MonoBehaviour
     private Ability ability;
     [SerializeField] TextMeshProUGUI cooldownTimer;
     [SerializeField] GameObject cover;
+    [SerializeField] StatusBar statusBar;
 
     private void Update()
     {
+        if (ability.GetDurationTimer() > 0f)
+        {
+            if (!statusBar.IsActive())
+            {
+                statusBar.Activate(ability.GetDuration());
+            }
+        }
+
         if (ability.GetCooldownTimer() > 0f)
         {
             if (!cooldownTimer.gameObject.activeSelf)

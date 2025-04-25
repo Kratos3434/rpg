@@ -7,12 +7,22 @@ public class AttackRange : MonoBehaviour
     //private CircleCollider2D circleCollider;
     private Unit unit;
     private Collider2D[] units;
-    [SerializeField] LayerMask targetLayer;
+    private LayerMask targetLayer;
     [SerializeField] GameObject rangedAttackProjectilePrefab;
 
     private void Start()
     {
         unit = GetComponent<Unit>();
+        string layerName = LayerMask.LayerToName(gameObject.layer);
+
+        if (layerName == "Enemy")
+        {
+            targetLayer = LayerMask.GetMask("Ally");
+        }
+        else
+        {
+            targetLayer = LayerMask.GetMask("Enemy");
+        }
         //circleCollider = GetComponent<CircleCollider2D>();
     }
 
