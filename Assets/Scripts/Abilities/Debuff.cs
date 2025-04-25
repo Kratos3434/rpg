@@ -23,10 +23,11 @@ public abstract class Debuff : Spell
         }
     }
 
-    public void Initialize(Unit targetUnit, float duration, float amount)
+    public void Initialize(Unit targetUnit, float duration, float amount = 0f)
     {
         this.targetUnit = targetUnit;
         this.duration = duration;
         this.amount = amount;
     }
+
 }

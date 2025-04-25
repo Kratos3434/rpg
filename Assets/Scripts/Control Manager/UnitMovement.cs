@@ -19,7 +19,13 @@ public class UnitMovement : MonoBehaviour
         if (isMoving)
         {
 
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, unit.GetMovementSpeed() * Time.deltaTime);
+            if (!unit.IsStunned())
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, unit.GetMovementSpeed() * Time.deltaTime);
+            } else
+            {
+                Stop();
+            }
         }
 
         if (Vector3.Distance(transform.position, targetPosition) < 0.1f)

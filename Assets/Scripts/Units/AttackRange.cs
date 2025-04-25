@@ -43,17 +43,23 @@ public class AttackRange : MonoBehaviour
 
                         if (unit.CanAttack())
                         {
-                            //Stop any movement to attack the target
-                            unit.GetMovement().Stop();
-                            //Wait for the attack to land to attack again
-                            unit.SetCanAttack(false);
-                            //For ranged attack
-                            if (!unit.IsMelee())
+                            if (!unit.IsStunned())
                             {
-                                GameObject projectile = Instantiate(rangedAttackProjectilePrefab, unit.transform.position, unit.transform.rotation);
-                                projectile.GetComponent<Projectile>().Initialize(target, unit, new Damage(Damage.Type.Physical, unit.GetDamage()), unit.GetAttackSpeed(), new List<Ability>(unit.GetAttackModifiers()));
+                                //Stop any movement to attack the target
+                                unit.GetMovement().Stop();
+                                //Wait for the attack to land to attack again
+                                unit.SetCanAttack(false);
+                                //For ranged attack
+                                if (!unit.IsMelee())
+                                {
+                                    GameObject projectile = Instantiate(rangedAttackProjectilePrefab, unit.transform.position, unit.transform.rotation);
+                                    projectile.GetComponent<Projectile>().Initialize(target, unit, new Damage(Damage.Type.Physical, unit.GetDamage()), unit.GetAttackSpeed(), new List<Ability>(unit.GetAttackModifiers()));
+                                }
+                                unit.RemoveAttackModifiers();
+                            } else
+                            {
+                                DisplayManager.errorMessage = "Stunned";
                             }
-                            unit.RemoveAttackModifiers();
                         }
                     }
                 }

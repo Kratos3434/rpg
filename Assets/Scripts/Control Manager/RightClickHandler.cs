@@ -17,29 +17,37 @@ public class RightClickHandler : MonoBehaviour
         {
             if (!EventSystem.current.IsPointerOverGameObject())
             {
-                targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                targetPosition.z = 0;
-
-                mainController.GetUnit().GetMovement().Move(targetPosition);
-
-                if (hudDisplayManager.GetUnit() != mainController.GetUnit())
+                if (!mainController.GetUnit().IsStunned())
                 {
-                    hudDisplayManager.SetUnit(mainController.GetUnit());
-                }
+                    targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    targetPosition.z = 0;
 
-                RaycastHit2D hit = Physics2D.Raycast(targetPosition, Vector2.zero, Mathf.Infinity, clickableLayers);
+                    mainController.GetUnit().GetMovement().Move(targetPosition);
 
-                if (hit.collider)
-                {
-                    Unit unit = hit.collider.GetComponent<Unit>();
-
-                    if (unit && unit != mainController.GetUnit())
+                    if (hudDisplayManager.GetUnit() != mainController.GetUnit())
                     {
-                        mainController.GetUnit().SetTargetUnit(unit);
+                        hudDisplayManager.SetUnit(mainController.GetUnit());
+                    }
+
+                    RaycastHit2D hit = Physics2D.Raycast(targetPosition, Vector2.zero, Mathf.Infinity, clickableLayers);
+
+                    if (hit.collider)
+                    {
+                        Unit unit = hit.collider.GetComponent<Unit>();
+
+                        if (unit && unit != mainController.GetUnit())
+                        {
+                            mainController.GetUnit().SetTargetUnit(unit);
+                        }
+                    }
+                    else
+                    {
+                        mainController.GetUnit().SetTargetUnit(null);
                     }
                 } else
                 {
                     mainController.GetUnit().SetTargetUnit(null);
+                    DisplayManager.errorMessage = "Stunned";
                 }
             }
         }

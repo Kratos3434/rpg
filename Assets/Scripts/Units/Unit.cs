@@ -30,6 +30,10 @@ public abstract class Unit : MonoBehaviour
 
     protected bool isStunned = false;
 
+    protected float stunDuration;
+
+    private float stunDurationTimer = 0f;
+
     protected Unit targetUnit { get; set; }
 
     private UnitMovement movement;
@@ -163,6 +167,21 @@ public abstract class Unit : MonoBehaviour
         attackModifiers.Add(modifier);
     }
 
+    public void RemoveDebuff(Debuff debuff)
+    {
+        debuffs.Remove(debuff);
+    }
+
+    public void Stun(float duration)
+    {
+        if (duration > stunDurationTimer)
+        {
+            stunDuration = duration;
+            stunDurationTimer = 0f;
+            isStunned = true;
+        }
+    }
+
     /// <summary>
     /// This is called every after attack
     /// </summary>
@@ -237,6 +256,11 @@ public abstract class Unit : MonoBehaviour
         return isStunned;
     }
 
+    public void SetIsStunned(bool isStunned)
+    {
+        this.isStunned = isStunned;
+    }
+
     private void Start()
     {
         movement = GetComponent<UnitMovement>();
@@ -245,6 +269,17 @@ public abstract class Unit : MonoBehaviour
     private void Update()
     {
         RegenerateHealth();
+
+        if (isStunned)
+        {
+            stunDurationTimer += Time.deltaTime;
+
+            if (stunDurationTimer >= stunDuration)
+            {
+                isStunned = false;
+                stunDurationTimer = 0f;
+            }
+        }
     }
 
 }

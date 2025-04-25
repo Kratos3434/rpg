@@ -24,13 +24,24 @@ public class ShockingOrb : Ability
         OnTargetedAbility((target, targetPosition) =>
         {
             GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
-            projectile.GetComponent<Projectile>().Initialize(target, sourceUnit, new Damage(damageType, damage[currentLevel]), 4f, null);
+            projectile.GetComponent<Projectile>().Initialize(target, sourceUnit, new Damage(damageType, damage[currentLevel]), 4f, new List<Ability>(1) { this });
         });
     }
 
     public override void AddDebuff(Unit targetUnit)
     {
-        throw new System.NotImplementedException();
+        ShockingOrbStun shockingOrbStun = targetUnit.gameObject.GetComponent<ShockingOrbStun>();
+
+        if (shockingOrbStun)
+        {
+            shockingOrbStun.Activate();
+        } else
+        {
+            ShockingOrbStun s = targetUnit.gameObject.AddComponent<ShockingOrbStun>();
+            targetUnit.AddDebuff(s);
+            s.Initialize(targetUnit, 2f);
+            s.Activate();
+        }
     }
 
     public override void Dispel()

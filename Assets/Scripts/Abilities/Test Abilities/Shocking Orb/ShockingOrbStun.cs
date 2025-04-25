@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class ShockingOrbStun : Debuff
 {
-
+    private void Awake()
+    {
+        title = "Shocking Orb Stun";
+        description = $"You are slowed stunned for {(int)duration}s";
+    }
 
     public override void Activate()
     {
-        throw new System.NotImplementedException();
+        targetUnit.Stun(duration);
+        durationTimer = 0f;
+        isActive = true;
     }
 
     public override void AddDebuff(Unit targetUnit)
@@ -18,6 +24,6 @@ public class ShockingOrbStun : Debuff
 
     public override void Dispel()
     {
-        throw new System.NotImplementedException();
+        Destroy(this);
     }
 }

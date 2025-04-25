@@ -18,23 +18,23 @@ public class AbilityDisplay : MonoBehaviour
 
     private void Update()
     {
+        if (unit.IsStunned())
+        {
+            if (!stunIcon.activeSelf)
+            {
+                stunIcon.SetActive(true);
+            }
+        }
+        else
+        {
+            if (stunIcon.activeSelf)
+            {
+                stunIcon.SetActive(false);
+            }
+        }
+
         if (ability)
         {
-            if (unit.IsStunned())
-            {
-                if (!stunIcon.activeSelf)
-                {
-                    stunIcon.SetActive(true);
-                }
-            }
-            else
-            {
-                if (stunIcon.activeSelf)
-                {
-                    stunIcon.SetActive(false);
-                }
-            }
-
             if (ability.GetDurationTimer() > 0f)
             {
                 if (!statusBar.IsActive())

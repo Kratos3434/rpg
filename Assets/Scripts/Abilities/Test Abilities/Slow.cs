@@ -32,6 +32,7 @@ public class Slow : Debuff
     public override void Dispel()
     {
         targetUnit.SetBonusMovementSpeed(targetUnit.GetBonusMovementSpeed() / (1 - amount));
+        targetUnit.RemoveDebuff(this);
         Destroy(this);
     }
 
