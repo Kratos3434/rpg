@@ -52,6 +52,8 @@ public abstract class Unit : MonoBehaviour
 
     private float healthRegenTimer = 0f;
 
+    [SerializeField] StatusBar statusBar;
+
 
     public void Initialize(float maxHealth, float maxMana, float baseDamage, float baseMovementSpeed = 2f, float baseHealthRegen = 1f, float baseManaRegen = 1.5f, float baseAttackSpeed = 5f)
     {
@@ -264,6 +266,7 @@ public abstract class Unit : MonoBehaviour
     private void Start()
     {
         movement = GetComponent<UnitMovement>();
+        statusBar.Deactivate();
     }
 
     private void Update()
@@ -272,12 +275,21 @@ public abstract class Unit : MonoBehaviour
 
         if (isStunned)
         {
+            if (!statusBar.IsActive())
+            {
+                statusBar.Activate();
+            } else
+            {
+                statusBar.SetValues(stunDuration, stunDuration - stunDurationTimer);
+            }
+
             stunDurationTimer += Time.deltaTime;
 
             if (stunDurationTimer >= stunDuration)
             {
                 isStunned = false;
                 stunDurationTimer = 0f;
+                statusBar.Deactivate();
             }
         }
     }

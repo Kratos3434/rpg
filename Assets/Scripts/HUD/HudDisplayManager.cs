@@ -63,7 +63,8 @@ public class HudDisplayManager : MonoBehaviour
         healthRegen.text = $"+{unit.GetHealthRegen():F1}";
         mana.text = $"{(int)unit.GetMana()}/{(int)unit.GetMaxMana()}";
         maxMana.text = $"+{unit.GetManaRegen():F1}";
-        damage.text = $"{(int)unit.GetBaseDamage()} + {(int)unit.GetBonusDamage()} Damage";
+        //damage.text = $"{(int)unit.GetBaseDamage()} + {(int)unit.GetBonusDamage()} Damage";
+        damage.text = $"{5f * Time.deltaTime}";
     }
 
     public void SetUnit(Unit unit)
