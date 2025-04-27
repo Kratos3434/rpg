@@ -7,10 +7,10 @@ public class Bob : Unit
     private void Awake()
     {
         Initialize(500, 500, 50);
-        baseAttackSpeed = 1.5f;
-        abilities.Add(gameObject.AddComponent<ShockingOrb>());
-        abilities.Add(gameObject.AddComponent<Empower>());
-        abilities.Add(gameObject.AddComponent<Blink>());
-        abilities.Add(gameObject.AddComponent<AoeSpell>());
+        baseAttackSpeed = 3f;
+        AddAbility<ShockingOrb>();
+        AddAbility<Empower>();
+        AddAbility<Clone>();
+        AddAbility<AoeSpell>();
     }
 }

@@ -45,13 +45,13 @@ public class AttackRange : MonoBehaviour
                     {
                         //Stop any movement to attack the target
                         unit.GetMovement().Stop();
-                        if (attackTimer >= (1f / unit.GetAttackSpeed()))
+                        if (attackTimer >= (1f / unit.GetAttackSpeed()) && unit.CanAttack())
                         {
                             if (!unit.IsStunned())
                             {
                                 
                                 //Wait for the attack to land to attack again
-                                unit.SetCanAttack(false);
+                                //unit.SetCanAttack(false);
                                 //For ranged attack
                                 if (!unit.IsMelee())
                                 {

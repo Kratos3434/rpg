@@ -48,6 +48,16 @@ public class AbilityDisplay : MonoBehaviour
                 statusBar.Deactivate();
             }
 
+            if (ability.GetCastTimeTimer() > 0f)
+            {
+                if (!statusBar.IsActive())
+                {
+                    statusBar.Activate();
+                    cover.SetActive(true);
+                }
+                statusBar.SetValues(ability.GetCastTime(), ability.GetCastTimeTimer());
+            }
+
             if (ability.GetCooldownTimer() > 0f)
             {
                 if (!cooldownTimer.gameObject.activeSelf)
@@ -56,7 +66,7 @@ public class AbilityDisplay : MonoBehaviour
                     cooldownTimer.gameObject.SetActive(true);
                 }
 
-                cooldownTimer.text = $"{(int)ability.GetCooldownTimer()}";
+                cooldownTimer.text = $"{(ability.GetCooldownTimer() < 1 ? ability.GetCooldownTimer().ToString("F1") : (int)ability.GetCooldownTimer())}";
             }
             else
             {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -138,6 +139,28 @@ public abstract class Unit : MonoBehaviour
         return abilities;
     }
 
+    public void AddAbility<T>() where T : Ability
+    {
+        if (gameObject.GetComponent<T>() == null) {
+            abilities.Add(gameObject.AddComponent<T>());
+        } else
+        {
+            abilities.Add(gameObject.GetComponent<T>());
+        }
+    }
+
+    public void RemoveAllDebuff()
+    {
+        if (debuffs.Count > 0)
+        {
+            foreach (Debuff debuff in debuffs)
+            {
+                debuff.Dispel();
+            }
+            debuffs.Clear();
+        }
+    }
+
     public void SetBonusDamage(float bonusDamage) {  this.bonusDamage = bonusDamage; }
 
     public void SetBonusMovementSpeed(float bonusMovementSpeed)
@@ -182,6 +205,21 @@ public abstract class Unit : MonoBehaviour
             stunDurationTimer = 0f;
             isStunned = true;
         }
+    }
+
+    public void UnStun()
+    {
+        stunDuration = 0f;
+        stunDurationTimer = 0f;
+        isStunned = false;
+        statusBar.Deactivate();
+    }
+
+    public void CreateClone()
+    {
+        GameObject clone = Instantiate(gameObject);
+        clone.name = $"{gameObject.name} Clone";
+        clone.transform.position = transform.position;
     }
 
     /// <summary>
@@ -287,9 +325,7 @@ public abstract class Unit : MonoBehaviour
 
             if (stunDurationTimer >= stunDuration)
             {
-                isStunned = false;
-                stunDurationTimer = 0f;
-                statusBar.Deactivate();
+                UnStun();
             }
         }
     }

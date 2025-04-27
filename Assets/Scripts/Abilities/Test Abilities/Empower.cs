@@ -7,7 +7,7 @@ public class Empower : Ability
 
     private void Awake()
     {
-        icon = "Icons/Abilities/dota-2-marci-abilities";
+        icon = "Icons/Abilities/Empower";
         title = "Empower";
         description = "Your next attack will deal bonus damage";
         currentLevel = 0;
@@ -27,7 +27,7 @@ public class Empower : Ability
         damageType = Damage.Type.Physical;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (isActive)
         {

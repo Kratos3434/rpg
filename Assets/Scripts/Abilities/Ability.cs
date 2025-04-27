@@ -18,7 +18,11 @@ public abstract class Ability : Spell
     protected Collider2D[] units;
     protected List<string> affects = new List<string>();
     protected string affect;
+    protected bool canCast = false;
+    protected float castTime = 0f;
+    protected float castTimeTimer = 0f;
     LayerMask targetLayer;
+    protected Vector3 targetPosition;
 
     private void Start()
     {
@@ -31,33 +35,56 @@ public abstract class Ability : Spell
             Debug.Log("Target Layer set to everything");
         } catch
         {
-            if (affects.Count > 1)
+            if (affects.Count > 0)
             {
-                targetLayer = LayerMask.GetMask(affects.ToArray());
-                affect = "Units";
-            } else
-            {
-                //Inverse the LayerMask
-                string layerName = LayerMask.LayerToName(gameObject.layer);
-
-                if (layerName == "Enemy")
+                if (affects.Count > 1)
                 {
-                    targetLayer = LayerMask.GetMask("Ally");
-                } else {
-                    targetLayer = LayerMask.GetMask("Enemy");
+                    targetLayer = LayerMask.GetMask(affects.ToArray());
+                    affect = "Units";
+                }
+                else
+                {
+                    
+                    targetLayer = LayerMask.GetMask(affects[0]);
                 }
             }
+            //else
+            //{
+            //    //Inverse the LayerMask
+            //    string layerName = LayerMask.LayerToName(gameObject.layer);
+
+            //    if (layerName == "Enemy")
+            //    {
+            //        targetLayer = LayerMask.GetMask("Ally");
+            //    }
+            //    else
+            //    {
+            //        targetLayer = LayerMask.GetMask("Enemy");
+            //    }
+            //}
         }
         sourceUnit = GetComponent<Unit>();
     }
 
     private void Update()
     {
-        units = Physics2D.OverlapCircleAll(transform.position, castRange[0], targetLayer);
-    }
+        if (castRange != null)
+        {
+            units = Physics2D.OverlapCircleAll(transform.position, castRange[0], targetLayer);
+        }
 
-    private void LateUpdate()
-    {
+        if (isActive && castTime > 0f)
+        {
+            sourceUnit.GetMovement().Stop();
+            castTimeTimer += Time.deltaTime;
+
+            if (castTimeTimer >= castTime) {
+                
+                canCast = true;
+                castTimeTimer = 0f;
+            }
+        }
+
         if (!isActive && cooldownTimer > 0f)
         {
 
@@ -70,7 +97,7 @@ public abstract class Ability : Spell
         }
     }
 
-    protected void OnTargetedAbility(Action<Unit, Vector3> action)
+    protected void OnTargetedAbility(Action<Unit, Vector3> action = null)
     {
         if (affect == "everything")
         {
@@ -83,23 +110,33 @@ public abstract class Ability : Spell
             float distance = Vector2.Distance(transform.position, MouseHover.GetTargetPosition());
 
             sourceUnit.GetMovement().Stop();
+            sourceUnit.SetCanAttack(false);
 
             if (distance > castRange[0])
             {
-                action(null, result);
+                //action(null, result);
+                targetPosition = result;
             } else
             {
-                action(null, MouseHover.GetTargetPosition());
+                //action(null, MouseHover.GetTargetPosition());
+                targetPosition = MouseHover.GetTargetPosition();
             }
-
+            isActive = true;
             cooldownTimer = cooldown[currentLevel];
 
         }   
         else if (MouseHover.GetHoveredUnit()) {
             try
             {
-                if (MouseHover.GetHoveredUnit() == sourceUnit) throw new System.Exception("Ability cannot target self");
-                if (LayerMask.LayerToName(MouseHover.GetHoveredUnit().gameObject.layer) == LayerMask.LayerToName(gameObject.layer)) throw new Exception("Ability Cannot Target Allies");
+                //Debug.Log(affects[0]);
+                if (LayerMask.LayerToName(gameObject.layer) != affects[0])
+                {
+                    if (MouseHover.GetHoveredUnit() == sourceUnit) throw new System.Exception("Ability cannot target self");
+                    if (LayerMask.LayerToName(MouseHover.GetHoveredUnit().gameObject.layer) == LayerMask.LayerToName(gameObject.layer)) throw new Exception("Ability Cannot Target Allies");
+                } else
+                {
+                    if (LayerMask.LayerToName(MouseHover.GetHoveredUnit().gameObject.layer) != LayerMask.LayerToName(gameObject.layer)) throw new Exception("Ability Cannot Target Enemies");
+                }
                 if (units.Length == 0) throw new System.Exception("Target out of range");
 
                 Unit target = null;
@@ -118,8 +155,11 @@ public abstract class Ability : Spell
                 if (!target) throw new System.Exception("Target out of range");
 
                 sourceUnit.GetMovement().Stop();
+                sourceUnit.SetCanAttack(false);
 
-                action(target, target.transform.position);
+                //action(target, target.transform.position);
+                targetUnit = target;
+                isActive = true;
 
                 cooldownTimer = cooldown[currentLevel];
             }
@@ -142,6 +182,16 @@ public abstract class Ability : Spell
         cooldownTimer = cooldown[currentLevel];
     }
 
+    protected void Cast(Action action)
+    {
+        if (canCast)
+        {
+            action();
+            canCast = false;
+            isActive = false;
+        }
+    }
+
     public float GetCooldownTimer() { return cooldownTimer; }
 
     public float GetDuration()
@@ -150,4 +200,27 @@ public abstract class Ability : Spell
     }
 
     public float GetDurationTimer() { return durationTimer; }
+
+    public float GetCastTime()
+    {
+        return castTime;
+    }
+
+    protected string InverseLayer()
+    {
+        string layerName = LayerMask.LayerToName(gameObject.layer);
+
+        if (layerName == "Enemy")
+        {
+            return "Ally";
+        }
+        else
+        {
+            return "Enemy";
+        }
+    }
+    public float GetCastTimeTimer()
+    {
+        return castTimeTimer;
+    }
 }

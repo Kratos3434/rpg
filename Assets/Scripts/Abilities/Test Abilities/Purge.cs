@@ -2,24 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blink : Ability
+public class Purge : Ability
 {
     private void Awake()
     {
-        title = "Blink";
-        description = "Allows the caster to blink to the target location";
+        affects.Add(LayerMask.LayerToName(gameObject.layer));
+        title = "Purge";
+        description = "Dispel the target ally or yourself";
         maxLevel = 4;
-        affects.Add("-1");
-        castRange = new List<float>(maxLevel) { 5, 6, 7, 8 };
-        cooldown = new List<float>(maxLevel) { 10, 9, 8, 7 };
-        castTime = .3f;
+        cooldown = new List<float>(maxLevel) { 5, 4, 3, 2, 1 };
+        castRange = new List<float>(1) { 5f };
+        castTime = .1f;
     }
 
     private void LateUpdate()
     {
         Cast(() =>
         {
-            transform.position = targetPosition;
+            targetUnit.RemoveAllDebuff();
         });
     }
 

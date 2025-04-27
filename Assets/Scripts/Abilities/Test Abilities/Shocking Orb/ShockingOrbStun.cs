@@ -24,6 +24,7 @@ public class ShockingOrbStun : Debuff
 
     public override void Dispel()
     {
+        targetUnit.UnStun();
         Destroy(this);
     }
 }

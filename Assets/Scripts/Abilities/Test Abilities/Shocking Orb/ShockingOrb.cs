@@ -9,23 +9,30 @@ public class ShockingOrb : Ability
     private void Awake()
     {
         projectilePrefab = Resources.Load<GameObject>("Prefabs/Abilities/Shocking Orb/Shocking Orb Projectile");
-        affects.Add("Enemy");
+        icon = "Icons/Abilities/Shocking_Orb_Icon";
+        affects.Add(InverseLayer());
         title = "Shocking Orb";
-        description = "Fires an orb to the target enemy dealing damage";
+        description = "Fires an orb to the target enemy dealing damage and stunning them";
         maxLevel = 4;
         damage = new List<float>(maxLevel) { 50, 100, 150, 200 };
         damageType = Damage.Type.Magical;
         castRange = new List<float>(1) { 5f };
         cooldown = new List<float>(maxLevel) { 10, 9, 8, 7 };
+        castTime = .1f;
+    }
+
+    private void LateUpdate()
+    {
+        Cast(() =>
+        {
+            GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
+            projectile.GetComponent<Projectile>().Initialize(targetUnit, sourceUnit, new Damage(damageType, damage[currentLevel]), 4f, new List<Ability>(1) { this });
+        });
     }
 
     public override void Activate()
     {
-        OnTargetedAbility((target, targetPosition) =>
-        {
-            GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
-            projectile.GetComponent<Projectile>().Initialize(target, sourceUnit, new Damage(damageType, damage[currentLevel]), 4f, new List<Ability>(1) { this });
-        });
+        OnTargetedAbility();
     }
 
     public override void AddDebuff(Unit targetUnit)
@@ -39,7 +46,7 @@ public class ShockingOrb : Ability
         {
             ShockingOrbStun s = targetUnit.gameObject.AddComponent<ShockingOrbStun>();
             targetUnit.AddDebuff(s);
-            s.Initialize(targetUnit, 2f);
+            s.Initialize(targetUnit, 10f);
             s.Activate();
         }
     }
