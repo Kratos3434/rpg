@@ -24,6 +24,8 @@ public class Empower : Ability
 
         cooldown = new List<float>(maxLevel) { 10, 9, 8, 7 };
 
+        manaCost = new List<float>(maxLevel) { 100, 110, 120, 140 };
+
         damageType = Damage.Type.Physical;
     }
 

@@ -14,6 +14,7 @@ public abstract class Ability : Spell
     protected List<float> duration;
     protected List<float> castRange;
     protected List<float> cooldown;
+    protected List<float> manaCost = new List<float>(1) { 0 };
     protected float cooldownTimer = 0f;
     protected Collider2D[] units;
     protected List<string> affects = new List<string>();
@@ -73,15 +74,19 @@ public abstract class Ability : Spell
             units = Physics2D.OverlapCircleAll(transform.position, castRange[0], targetLayer);
         }
 
-        if (isActive && castTime > 0f)
+        if (isActive)
         {
-            sourceUnit.GetMovement().Stop();
-            castTimeTimer += Time.deltaTime;
+            if (castTime > 0f)
+            {
+                sourceUnit.GetMovement().Stop();
+                castTimeTimer += Time.deltaTime;
 
-            if (castTimeTimer >= castTime) {
-                
-                canCast = true;
-                castTimeTimer = 0f;
+                if (castTimeTimer >= castTime)
+                {
+                    sourceUnit.SetMana(sourceUnit.GetMana() - manaCost[currentLevel]);
+                    canCast = true;
+                    castTimeTimer = 0f;
+                }
             }
         }
 
@@ -121,6 +126,7 @@ public abstract class Ability : Spell
                 //action(null, MouseHover.GetTargetPosition());
                 targetPosition = MouseHover.GetTargetPosition();
             }
+            //sourceUnit.SetMana(sourceUnit.GetMana() - manaCost[currentLevel]);
             isActive = true;
             cooldownTimer = cooldown[currentLevel];
 
@@ -156,7 +162,6 @@ public abstract class Ability : Spell
 
                 sourceUnit.GetMovement().Stop();
                 sourceUnit.SetCanAttack(false);
-
                 //action(target, target.transform.position);
                 targetUnit = target;
                 isActive = true;
@@ -222,5 +227,10 @@ public abstract class Ability : Spell
     public float GetCastTimeTimer()
     {
         return castTimeTimer;
+    }
+
+    public float GetManaCost()
+    {
+        return manaCost[currentLevel];
     }
 }

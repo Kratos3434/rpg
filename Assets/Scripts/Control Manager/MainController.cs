@@ -38,6 +38,17 @@ public class MainController : MonoBehaviour
             if (!unit.GetAbility(index)) throw new System.Exception("Ability Slot is Empty");
             if (unit.GetAbility(index).GetCooldownTimer() > 0f) throw new System.Exception("On Cooldown");
 
+            if (unit.GetAbility(index).GetManaCost() > unit.GetMana())
+            {
+                throw new System.Exception("Not Enough Mana");
+            } else
+            {
+                if (unit.GetAbility(index).GetCastTime() == 0f)
+                {
+                    unit.SetMana(unit.GetMana() - unit.GetAbility(index).GetManaCost());
+                }
+            }
+
             unit.GetAbility(index).Activate();
         } catch (System.Exception e)
         {

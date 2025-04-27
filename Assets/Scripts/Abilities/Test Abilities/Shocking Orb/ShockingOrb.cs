@@ -15,6 +15,7 @@ public class ShockingOrb : Ability
         description = "Fires an orb to the target enemy dealing damage and stunning them";
         maxLevel = 4;
         damage = new List<float>(maxLevel) { 50, 100, 150, 200 };
+        manaCost = new List<float>(maxLevel) { 50, 100, 150, 200 };
         damageType = Damage.Type.Magical;
         castRange = new List<float>(1) { 5f };
         cooldown = new List<float>(maxLevel) { 10, 9, 8, 7 };

@@ -12,6 +12,7 @@ public class Clone : Ability
         description = "Create a clone of yourself that can use abilities that you can control";
         maxLevel = 4;
         cooldown = new List<float>(maxLevel) { 5, 5, 5, 5 };
+        icon = "Icons/Abilities/Clone";
         ///castTime = .1f;
     }
     public override void Activate()

@@ -8,7 +8,7 @@ public class AbilityDisplay : MonoBehaviour
 {
     [SerializeField] Image icon;
     [SerializeField] 
-    private string placeholderPath = "Icons/Abilities/CycHzgAWEAAZErb";
+    private string placeholderPath = "Icons/Abilities/Empty";
     private Ability ability;
     [SerializeField] TextMeshProUGUI cooldownTimer;
     [SerializeField] GameObject cover;
@@ -117,7 +117,7 @@ public class AbilityDisplay : MonoBehaviour
             cover.SetActive(false);
             stunIcon.SetActive(false);
             statusBar.Deactivate();
-            SetIcon("");
+            SetIcon("Icons/Abilities/Empty");
         }
     }
 }

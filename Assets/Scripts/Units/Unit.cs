@@ -53,6 +53,8 @@ public abstract class Unit : MonoBehaviour
 
     private float healthRegenTimer = 0f;
 
+    private float manaRegenTimer = 0f;
+
     [SerializeField] StatusBar statusBar;
 
 
@@ -148,6 +150,8 @@ public abstract class Unit : MonoBehaviour
             abilities.Add(gameObject.GetComponent<T>());
         }
     }
+
+    public void SetMana(float mana) { this.mana = mana; }
 
     public void RemoveAllDebuff()
     {
@@ -291,6 +295,25 @@ public abstract class Unit : MonoBehaviour
         healthBar.SetHealth(health);
     }
 
+    private void RegenerateMana()
+    {
+        manaRegenTimer += Time.deltaTime;
+
+        if (manaRegenTimer >= (1f / GetManaRegen()))
+        {
+            if (mana >= maxMana)
+            {
+                mana = maxMana;
+            } else if (mana < maxMana)
+            {
+                mana += 1f;
+            }
+            manaRegenTimer = 0f;
+        }
+
+        manaBar.SetMana(mana);
+    }
+
     public bool IsStunned()
     {
         return isStunned;
@@ -310,6 +333,7 @@ public abstract class Unit : MonoBehaviour
     private void Update()
     {
         RegenerateHealth();
+        RegenerateMana();
 
         if (isStunned)
         {
