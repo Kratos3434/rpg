@@ -27,6 +27,8 @@ public class MainController : MonoBehaviour
         {
             ActivateAbility(3);
         }
+
+
     }
 
     private void ActivateAbility(int index)
@@ -41,12 +43,6 @@ public class MainController : MonoBehaviour
             if (unit.GetAbility(index).GetManaCost() > unit.GetMana())
             {
                 throw new System.Exception("Not Enough Mana");
-            } else
-            {
-                if (unit.GetAbility(index).GetCastTime() == 0f)
-                {
-                    unit.SetMana(unit.GetMana() - unit.GetAbility(index).GetManaCost());
-                }
             }
 
             unit.GetAbility(index).Activate();

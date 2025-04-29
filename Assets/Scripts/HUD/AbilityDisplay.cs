@@ -14,10 +14,12 @@ public class AbilityDisplay : MonoBehaviour
     [SerializeField] GameObject cover;
     [SerializeField] StatusBar statusBar;
     [SerializeField] GameObject stunIcon;
+    [SerializeField] GameObject notEnoughManaIcon;
     private Unit unit;
 
     private void Update()
     {
+
         if (unit.IsStunned())
         {
             if (!stunIcon.activeSelf)
@@ -35,6 +37,15 @@ public class AbilityDisplay : MonoBehaviour
 
         if (ability)
         {
+            if (unit.GetMana() < ability.GetManaCost())
+            {
+                notEnoughManaIcon.SetActive(true);
+            }
+            else
+            {
+                notEnoughManaIcon.SetActive(false);
+            }
+
             if (ability.GetDurationTimer() > 0f)
             {
                 if (!statusBar.IsActive())

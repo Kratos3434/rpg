@@ -5,9 +5,11 @@ using UnityEngine;
 public class UnitMovement : MonoBehaviour
 {
     private Vector3 targetPosition;
-    private bool isMoving = false;
+    private bool isMoving = true;
     public LayerMask clickableLayers;
     private Unit unit;
+    [SerializeField] MyPathFinder pf;
+    int index = 0;
 
     private void Awake()
     {
@@ -16,21 +18,29 @@ public class UnitMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Vector2 target = pf.GetPath()[index];
         if (isMoving)
         {
 
             if (!unit.IsStunned())
             {
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, unit.GetMovementSpeed() * Time.deltaTime);
+                Vector2 newPos = Vector2.MoveTowards(transform.position, target, unit.GetMovementSpeed() * Time.deltaTime);
+                transform.position = new Vector3(newPos.x, newPos.y, transform.position.z);
             } else
             {
                 Stop();
             }
         }
 
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        if (Vector3.Distance(transform.position, target) < 0.1f)
         {
-            isMoving = false;
+            index++;
+            if (index >= pf.GetPath().Count)
+            {
+                isMoving = false;
+                index = 0;
+                Debug.Log("Target Reached");
+            }
         }
     }
 

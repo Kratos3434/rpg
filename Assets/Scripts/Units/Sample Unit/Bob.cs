@@ -10,7 +10,7 @@ public class Bob : Unit
         baseAttackSpeed = 3f;
         AddAbility<ShockingOrb>();
         AddAbility<Empower>();
-        AddAbility<Clone>();
+        AddAbility<DemonicConversion>();
         AddAbility<AoeSpell>();
     }
 }

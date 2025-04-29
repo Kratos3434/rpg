@@ -12,6 +12,7 @@ public class Clone : Ability
         description = "Create a clone of yourself that can use abilities that you can control";
         maxLevel = 4;
         cooldown = new List<float>(maxLevel) { 5, 5, 5, 5 };
+        manaCost = new List<float>(maxLevel) { 100, 150, 200, 250 };
         icon = "Icons/Abilities/Clone";
         ///castTime = .1f;
     }

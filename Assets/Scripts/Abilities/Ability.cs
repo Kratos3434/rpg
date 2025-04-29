@@ -27,14 +27,14 @@ public abstract class Ability : Spell
 
     private void Start()
     {
-        //Logic to set which unit this ability will affect
         try
         {
             int everything = int.Parse(affects[0]);
             targetLayer = everything;
             affect = "everything";
             Debug.Log("Target Layer set to everything");
-        } catch
+        }
+        catch
         {
             if (affects.Count > 0)
             {
@@ -45,24 +45,10 @@ public abstract class Ability : Spell
                 }
                 else
                 {
-                    
+
                     targetLayer = LayerMask.GetMask(affects[0]);
                 }
             }
-            //else
-            //{
-            //    //Inverse the LayerMask
-            //    string layerName = LayerMask.LayerToName(gameObject.layer);
-
-            //    if (layerName == "Enemy")
-            //    {
-            //        targetLayer = LayerMask.GetMask("Ally");
-            //    }
-            //    else
-            //    {
-            //        targetLayer = LayerMask.GetMask("Enemy");
-            //    }
-            //}
         }
         sourceUnit = GetComponent<Unit>();
     }
@@ -76,8 +62,9 @@ public abstract class Ability : Spell
 
         if (isActive)
         {
-            if (castTime > 0f)
+            if (!canCast)
             {
+                Debug.Log("Casted");
                 sourceUnit.GetMovement().Stop();
                 castTimeTimer += Time.deltaTime;
 
@@ -163,6 +150,7 @@ public abstract class Ability : Spell
                 sourceUnit.GetMovement().Stop();
                 sourceUnit.SetCanAttack(false);
                 //action(target, target.transform.position);
+                //Debug.Log("Target set");
                 targetUnit = target;
                 isActive = true;
 
@@ -183,6 +171,7 @@ public abstract class Ability : Spell
     {
         action();
         isActive = false;
+        canCast = false;
         durationTimer = 0f;
         cooldownTimer = cooldown[currentLevel];
     }
@@ -232,5 +221,33 @@ public abstract class Ability : Spell
     public float GetManaCost()
     {
         return manaCost[currentLevel];
+    }
+
+    public void ReSetLayer()
+    {
+        try
+        {
+            int everything = int.Parse(affects[0]);
+            targetLayer = everything;
+            affect = "everything";
+            Debug.Log("Target Layer set to everything");
+        }
+        catch
+        {
+            if (affects.Count > 0)
+            {
+                if (affects.Count > 1)
+                {
+                    targetLayer = LayerMask.GetMask(affects.ToArray());
+                    affect = "Units";
+                }
+                else
+                {
+                    affects[0] = InverseLayer();
+                    targetLayer = LayerMask.GetMask(affects[0]);
+                    //Debug.Log("Target layer changed");
+                }
+            }
+        }
     }
 }
