@@ -19,7 +19,7 @@ public class ShockingOrb : Ability
         damageType = Damage.Type.Magical;
         castRange = new List<float>(1) { 5f };
         cooldown = new List<float>(maxLevel) { 10, 9, 8, 7 };
-        castTime = .1f;
+        castTime = 5f;
     }
 
     private void LateUpdate()
@@ -47,7 +47,7 @@ public class ShockingOrb : Ability
         {
             ShockingOrbStun s = targetUnit.gameObject.AddComponent<ShockingOrbStun>();
             targetUnit.AddDebuff(s);
-            s.Initialize(targetUnit, 10f);
+            s.Initialize(targetUnit, 5f);
             s.Activate();
         }
     }

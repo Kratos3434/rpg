@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyPathFinder : MonoBehaviour
+public class MyPathFinder
 {
 
-    private Vector2 currentPos = new Vector2(1.53f, -3.49f);
-    private Vector2 targetPos = new Vector2(-6.57f, -0.53f);
+    private Vector2 currentPos;
+    private Vector2 targetPos;
     private List<MyNode> visited = new List<MyNode>();
     private List<MyNode> open = new List<MyNode>();
     private List<Vector2> path = new List<Vector2>();
 
-    private void Awake()
+
+    public MyPathFinder(Vector2 currentPos, Vector2 targetPos)
     {
+        this.currentPos = currentPos;
+        this.targetPos = targetPos;
         FindPath();
     }
 
@@ -68,6 +71,7 @@ public class MyPathFinder : MonoBehaviour
 
             if ((int)targetPos.x == (int)shortest.position.x && (int)targetPos.y == (int)shortest.position.y) {
                 MyNode starting = shortest;
+                starting.position = targetPos;
                 //Debug.Log("Target reached" + shortest.position);
                 //Debug.Log("=============Test start===========");
                 while (starting != null)
@@ -126,49 +130,49 @@ public class MyPathFinder : MonoBehaviour
 
     private bool IsWall(Vector2 pos)
     {
-        Collider2D hit = Physics2D.OverlapCircle(pos, .25f, LayerMask.GetMask("Wall"));
+        Collider2D hit = Physics2D.OverlapCircle(pos, .5f,  LayerMask.GetMask("Wall"));
         //Debug.Log(pos);
         return hit != null;
     }
 
     private Vector2 GetRight()
     {
-        return currentPos + Vector2.right;
+        return currentPos + Vector2.right * 1f;
     }
 
     private Vector2 GetLeft()
     {
-        return currentPos - Vector2.right;
+        return currentPos - Vector2.right * 1f;
     }
 
     private Vector2 GetUp()
     {
-        return currentPos + Vector2.up;
+        return currentPos + Vector2.up * 1f;
     }
 
     private Vector2 GetDown()
     {
-        return currentPos - Vector2.up;
+        return currentPos - Vector2.up * 1f;
     }
 
     private Vector2 GetUpRight()
     {
-        return currentPos + (Vector2.up + Vector2.right);
+        return currentPos + (Vector2.up + Vector2.right) * 1f;
     }
 
     private Vector2 GetDownRight()
     {
-        return currentPos + (Vector2.down + Vector2.right);
+        return currentPos + (Vector2.down + Vector2.right) * 1f;
     }
 
     private Vector2 GetUpLeft()
     {
-        return currentPos + (Vector2.up + Vector2.left);
+        return currentPos + (Vector2.up + Vector2.left) * 1f;
     }
 
     private Vector2 GetDownLeft()
     {
-        return currentPos + (Vector2.down + Vector2.left);
+        return currentPos + (Vector2.down + Vector2.left) * 1f;
     }
 
     public List<Vector2> GetPath()

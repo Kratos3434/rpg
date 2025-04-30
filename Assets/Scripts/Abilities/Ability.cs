@@ -64,7 +64,7 @@ public abstract class Ability : Spell
         {
             if (!canCast)
             {
-                Debug.Log("Casted");
+                //Debug.Log("Casted");
                 sourceUnit.GetMovement().Stop();
                 castTimeTimer += Time.deltaTime;
 
@@ -73,6 +73,12 @@ public abstract class Ability : Spell
                     sourceUnit.SetMana(sourceUnit.GetMana() - manaCost[currentLevel]);
                     canCast = true;
                     castTimeTimer = 0f;
+                }
+                if (sourceUnit.IsStunned())
+                {
+                    castTimeTimer = 0f;
+                    isActive = false;
+                    cooldownTimer = 0f;
                 }
             }
         }

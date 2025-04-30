@@ -1,46 +1,74 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class UnitMovement : MonoBehaviour
 {
     private Vector3 targetPosition;
-    private bool isMoving = true;
+    private bool isMoving = false;
     public LayerMask clickableLayers;
     private Unit unit;
-    [SerializeField] MyPathFinder pf;
-    int index = 0;
+    //MyPathFinder pf;
+    //int index = 0;
 
     private void Awake()
     {
         unit = GetComponent<Unit>();
+        //pf = null;
     }
 
     private void FixedUpdate()
     {
-        Vector2 target = pf.GetPath()[index];
+        //if (pf == null) return;
+
+        //if (pf != null)
+        //{
+        //    Vector2 target = pf.GetPath()[index];
+        //    if (isMoving)
+        //    {
+
+        //        if (!unit.IsStunned())
+        //        {
+        //            Vector2 newPos = Vector2.MoveTowards(transform.position, target, unit.GetMovementSpeed() * Time.deltaTime);
+        //            transform.position = new Vector3(newPos.x, newPos.y, transform.position.z);
+        //        }
+        //        else
+        //        {
+        //            Stop();
+        //        }
+        //    }
+
+        //    if (Vector3.Distance(transform.position, target) < 0.1f)
+        //    {
+        //        index++;
+        //        if (index >= pf.GetPath().Count)
+        //        {
+        //            isMoving = false;
+        //            index = 0;
+        //            pf = null;
+        //            Debug.Log("Target Reached");
+        //        }
+        //    }
+        //}
+
         if (isMoving)
         {
 
             if (!unit.IsStunned())
             {
-                Vector2 newPos = Vector2.MoveTowards(transform.position, target, unit.GetMovementSpeed() * Time.deltaTime);
+                Vector2 newPos = Vector2.MoveTowards(transform.position, targetPosition, unit.GetMovementSpeed() * Time.deltaTime);
                 transform.position = new Vector3(newPos.x, newPos.y, transform.position.z);
-            } else
+            }
+            else
             {
                 Stop();
             }
         }
 
-        if (Vector3.Distance(transform.position, target) < 0.1f)
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
-            index++;
-            if (index >= pf.GetPath().Count)
-            {
-                isMoving = false;
-                index = 0;
-                Debug.Log("Target Reached");
-            }
+            isMoving = false;
         }
     }
 
@@ -58,8 +86,22 @@ public class UnitMovement : MonoBehaviour
         }
     }
 
+    //public void SetPathFinder(MyPathFinder pf)
+    //{
+    //    Debug.Log("Path finder set");
+    //    this.pf = pf;
+    //    isMoving = true;
+    //}
+
     public void Stop()
     {
+        //pf = null;
         isMoving = false;
+        //index = 0;
+    }
+
+    public void Resmue()
+    {
+        isMoving = true;
     }
 }

@@ -21,7 +21,8 @@ public class RightClickHandler : MonoBehaviour
                 {
                     targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     targetPosition.z = 0;
-
+                    //mainController.GetUnit().GetMovement().Stop();
+                    //mainController.GetUnit().GetMovement().SetPathFinder(new MyPathFinder(mainController.GetUnit().transform.position, targetPosition));
                     mainController.GetUnit().GetMovement().Move(targetPosition);
 
                     if (hudDisplayManager.GetUnit() != mainController.GetUnit())

@@ -65,11 +65,12 @@ public class AbilityDisplay : MonoBehaviour
                 {
                     statusBar.Activate();
                     cover.SetActive(true);
+                    //cooldownTimer.gameObject.SetActive(false);
                 }
                 statusBar.SetValues(ability.GetCastTime(), ability.GetCastTimeTimer());
             }
 
-            if (ability.GetCooldownTimer() > 0f)
+            if (ability.GetCooldownTimer() > 0f && ability.GetCastTimeTimer() == 0f)
             {
                 if (!cooldownTimer.gameObject.activeSelf)
                 {
@@ -121,6 +122,7 @@ public class AbilityDisplay : MonoBehaviour
 
         if (ability)
         {
+            cover.SetActive(false);
             SetIcon(ability.GetIcon());
         } else
         {
