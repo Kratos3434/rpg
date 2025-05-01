@@ -104,4 +104,6 @@ public class UnitMovement : MonoBehaviour
     {
         isMoving = true;
     }
+
+    public bool IsMoving() { return isMoving; }
 }

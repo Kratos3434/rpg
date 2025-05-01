@@ -18,11 +18,15 @@ public abstract class Ability : Spell
     protected float cooldownTimer = 0f;
     protected Collider2D[] units;
     protected List<string> affects = new List<string>();
+    protected List<float> healing;
     protected string affect;
     protected bool canCast = false;
+    protected List<float> channelTime;
+    protected float channelTimeTimer = 0f;
     protected float castTime = 0f;
     protected float castTimeTimer = 0f;
     LayerMask targetLayer;
+    protected bool isChanneled = false;
     protected Vector3 targetPosition;
 
     private void Start()
@@ -62,7 +66,7 @@ public abstract class Ability : Spell
 
         if (isActive)
         {
-            if (!canCast)
+            if (!canCast && channelTimeTimer == 0f)
             {
                 //Debug.Log("Casted");
                 sourceUnit.GetMovement().Stop();
@@ -79,6 +83,22 @@ public abstract class Ability : Spell
                     castTimeTimer = 0f;
                     isActive = false;
                     cooldownTimer = 0f;
+                }
+            }
+            else
+            {
+                 if (channelTimeTimer > 0f)
+                {
+                    if (channelTimeTimer == channelTime[currentLevel])
+                    {
+                        sourceUnit.SetMana(sourceUnit.GetMana() - manaCost[currentLevel]);
+                    }
+                    channelTimeTimer -= Time.deltaTime;
+
+                    if (channelTimeTimer <= 0f)
+                    {
+                        Dispel();
+                    }
                 }
             }
         }
@@ -180,6 +200,8 @@ public abstract class Ability : Spell
         canCast = false;
         durationTimer = 0f;
         cooldownTimer = cooldown[currentLevel];
+        channelTimeTimer = 0f;
+        sourceUnit.SetChanneledAbility(null);
     }
 
     protected void Cast(Action action)
@@ -227,6 +249,16 @@ public abstract class Ability : Spell
     public float GetManaCost()
     {
         return manaCost[currentLevel];
+    }
+
+    public float GetChannelTimeTimer()
+    {
+        return channelTimeTimer;
+    }
+
+    public float GetChannelTime()
+    {
+        return channelTime[currentLevel];
     }
 
     public void ReSetLayer()

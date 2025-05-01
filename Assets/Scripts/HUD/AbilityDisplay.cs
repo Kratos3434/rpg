@@ -15,6 +15,8 @@ public class AbilityDisplay : MonoBehaviour
     [SerializeField] StatusBar statusBar;
     [SerializeField] GameObject stunIcon;
     [SerializeField] GameObject notEnoughManaIcon;
+    [SerializeField] GameObject channelingStatus;
+    [SerializeField] StatusBar channelingStatusBar;
     private Unit unit;
 
     private void Update()
@@ -87,6 +89,16 @@ public class AbilityDisplay : MonoBehaviour
                     cover.SetActive(false);
                     cooldownTimer.gameObject.SetActive(false);
                 }
+            }
+
+            if (ability.GetChannelTimeTimer() > 0f)
+            {
+                cover.SetActive(true);
+                channelingStatus.SetActive(true);
+                channelingStatusBar.SetValues(ability.GetChannelTime(), ability.GetChannelTimeTimer());
+            } else
+            {
+                channelingStatus.SetActive(false);
             }
         }
     }

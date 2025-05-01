@@ -44,6 +44,11 @@ public class MainController : MonoBehaviour
             {
                 throw new System.Exception("Not Enough Mana");
             }
+            //unit.GetMovement().Stop();
+            if (unit.GetChanneledAbility())
+            {
+                unit.GetChanneledAbility().Dispel();
+            }
 
             unit.GetAbility(index).Activate();
         } catch (System.Exception e)

@@ -51,6 +51,8 @@ public abstract class Unit : MonoBehaviour
 
     protected List<Debuff> debuffs = new List<Debuff>();
 
+    protected Ability channeledAbility;
+
     private float healthRegenTimer = 0f;
 
     private float manaRegenTimer = 0f;
@@ -104,6 +106,16 @@ public abstract class Unit : MonoBehaviour
         return baseAttackSpeed + bonusAttackSpeed;
     }
 
+    public void SetChanneledAbility(Ability channeledAbility)
+    {
+        this.channeledAbility = channeledAbility;
+    }
+
+    public Ability GetChanneledAbility()
+    {
+        return channeledAbility;
+    }
+
     public float GetHealth()
     {
         return health;
@@ -117,6 +129,16 @@ public abstract class Unit : MonoBehaviour
     public void SetCanAttack(bool canAttack)
     {
         this.canAttack = canAttack;
+    }
+
+    public void SetBonusHealthRegen(float bonusHealthRegen)
+    {
+        this.bonusHealthRegen = bonusHealthRegen;
+    }
+
+    public float GetBonusHealthRegen()
+    {
+        return bonusHealthRegen;
     }
 
     public bool CanAttack() { return canAttack; }

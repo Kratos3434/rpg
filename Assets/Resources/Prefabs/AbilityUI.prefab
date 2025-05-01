@@ -61,6 +61,8 @@ MonoBehaviour:
   statusBar: {fileID: 2881985916242896243}
   stunIcon: {fileID: 3269299294941339804}
   notEnoughManaIcon: {fileID: 1600183960089259938}
+  channelingStatus: {fileID: 0}
+  channelingStatusBar: {fileID: 0}
 --- !u!1 &1600183960089259938
 GameObject:
   m_ObjectHideFlags: 0
