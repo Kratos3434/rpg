@@ -95,7 +95,7 @@ public abstract class Ability : Spell
                     }
                     channelTimeTimer -= Time.deltaTime;
 
-                    if (channelTimeTimer <= 0f)
+                    if (channelTimeTimer <= 0f || sourceUnit.IsStunned())
                     {
                         Dispel();
                     }

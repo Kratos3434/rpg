@@ -19,7 +19,7 @@ public class ShockingOrb : Ability
         damageType = Damage.Type.Magical;
         castRange = new List<float>(1) { 5f };
         cooldown = new List<float>(maxLevel) { 10, 9, 8, 7 };
-        castTime = 5f;
+        castTime = 1f;
     }
 
     private void LateUpdate()
